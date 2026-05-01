@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MADLANGEMPISI HOLDINGS - Specialized Mining & Industrial Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <script>
+        const savedTheme = localStorage.getItem('color-theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <style>
+        :root {
+            --color-primary: #B8934C; /* Logo Gold */
+            --color-secondary: #1A1F2B; /* Deep Navy */
+            --color-primary-hover: #9C7A3B;
+        }
+
+        .bg-accent { background-color: var(--color-primary); }
+        .bg-secondary-accent { background-color: var(--color-secondary); }
+        .hover\:bg-accent-hover:hover { background-color: var(--color-primary-hover); }
+        .text-accent { color: var(--color-primary); }
+        .text-secondary-accent { color: var(--color-secondary); }
+        .border-accent { border-color: var(--color-primary); }
+                
+        body { 
+            font-family: 'Inter', sans-serif; 
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #111827;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.75s ease, visibility 0.75s ease;
+        }
+        #preloader.loaded { opacity: 0; visibility: hidden; }
+        
+        .spinner {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            border: 8px solid #4B5563;
+            border-top-color: var(--color-primary);
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #background-video {
+            position: fixed;
+            right: 0; bottom: 0;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            z-index: -100;
+            filter: brightness(0.25) saturate(1.2);
+            object-fit: cover;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.95));
+            z-index: 0;
+        }
+        #hero > div { position: relative; z-index: 1; }
+
+        #services, #testimonials, #faq, #stats, #gallery { background-color: rgba(255, 255, 255, 0.98); }
+        #about, #projects { background-color: rgba(248, 250, 252, 0.98); }
+        #contact { background-color: rgba(26, 26, 26, 0.99); }
+
+        .dark #services, .dark #testimonials, .dark #faq, .dark #stats, .dark #gallery { background-color: rgba(15, 23, 42, 0.98); }
+        .dark #about, .dark #projects { background-color: rgba(30, 41, 59, 0.98); }
+        .dark #contact { background-color: rgba(15, 23, 42, 0.98); }
+
+        #header.scrolled {
+            background-color: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .dark #header.scrolled { background-color: rgba(15, 23, 42, 0.96); }
+
+        #nav-links a, #theme-toggle, #mobile-menu-button { color: white; transition: all 0.3s ease; }
+        #header.scrolled #nav-links a, #header.scrolled #theme-toggle, #header.scrolled #mobile-menu-button { color: #334155; }
+        .dark #header.scrolled #nav-links a, .dark #header.scrolled #theme-toggle, .dark #header.scrolled #mobile-menu-button { color: #E2E8F0; }
+
+        #nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 3px;
+            bottom: -4px; left: 0;
+            background-color: var(--color-primary);
+            transition: width 0.3s ease;
+        }
+        #nav-links a:hover::after { width: 100%; }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .whatsapp-fab {
+            position: fixed; bottom: 20px; right: 20px;
+            z-index: 1000;
+            background-color: #25D366;
+            color: white; width: 60px; height: 60px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fab-pulse 2.5s infinite;
+        }
+        @keyframes fab-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .faq-item.active .faq-answer { max-height: 500px; }
+        .faq-item.active i { transform: rotate(45deg); color: var(--color-primary); }
+
+        .logo-gradient-text {
+            background: linear-gradient(45deg, var(--color-primary), #E5C284);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description-panel {
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f1f5f9;
+        }
+        .dark .description-panel {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .compliance-tag {
+            background: rgba(184, 147, 76, 0.1);
+            color: var(--color-primary);
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(184, 147, 76, 0.2);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-300 overflow-x-hidden">
+
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Background Video -->
+    <video autoplay loop muted playsinline id="background-video">
+        <source src="background.mp4" type="video/mp4">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-mining-excavator-working-in-a-quarry-41584-large.mp4" type="video/mp4">
+    </video>
+
+    <!-- Header -->
+    <header id="header" class="fixed top-0 w-full z-50 transition-all duration-300">
+        <nav class="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-4 md:space-x-6 group">
+                <div class="bg-white p-1 rounded-2xl shadow-xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                    <img src="logo.jpg" alt="Madlangempisi Logo" class="w-16 h-16 md:w-24 md:h-24 object-contain rounded-xl" onerror="this.src='https://via.placeholder.com/100?text=Logo'">
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="text-white font-black text-xl md:text-3xl tracking-tighter uppercase drop-shadow-md">MADLANGEMPISI</span>
+                    <span class="text-accent font-bold text-xs md:text-sm tracking-widest uppercase drop-shadow-md">Holdings (PTY) LTD</span>
+                </div>
+            </a>
+
+            <div class="flex items-center">
+                <div id="nav-links" class="hidden md:flex items-center space-x-8 lg:space-x-10 uppercase font-black text-[10px] tracking-widest">
+                    <a href="#hero" class="relative" onclick="togglePages(false)">Home</a>
+                    <a href="#services" class="relative" onclick="togglePages(false)">Services</a>
+                    <a href="#gallery" class="relative" onclick="togglePages(false)">Projects</a>
+                    <a href="#about" class="relative" onclick="togglePages(false)">About</a>
+                    <a href="#contact" class="relative" onclick="togglePages(false)">Contact</a>
+                </div>
+                
+                <button id="theme-toggle" class="ml-4 md:ml-8 p-2 md:p-3 bg-black/10 hover:bg-black/20 backdrop-blur-md rounded-full transition-all">
+                    <i id="theme-icon" class="fas fa-moon text-base md:text-lg"></i>
+                </button>
+
+                <a href="#contact" onclick="togglePages(false)" class="hidden lg:block ml-8 bg-accent text-white font-extrabold px-8 py-3 rounded-full hover:bg-accent-hover uppercase text-xs tracking-wider shadow-lg">Get a Quote</a>
+                
+                <button id="mobile-menu-button" class="md:hidden text-2xl ml-4">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white dark:bg-slate-800 shadow-2xl border-t dark:border-slate-700">
+            <div class="flex flex-col p-6 space-y-4 font-black uppercase text-xs tracking-widest">
+                <a href="#hero" class="mobile-link text-slate-800 dark:text-white" onclick="togglePages(false)">Home</a>
+                <a href="#services" class="mobile-link text-slate-800 dark:text-white" onclick="togglePages(false)">Services</a>
+                <a href="#gallery" class="mobile-link text-slate-800 dark:text-white" onclick="togglePages(false)">Projects</a>
+                <a href="#about" class="mobile-link text-slate-800 dark:text-white" onclick="togglePages(false)">About</a>
+                <a href="#contact" class="mobile-link text-slate-800 dark:text-white" onclick="togglePages(false)">Contact</a>
+                <a href="#contact" class="bg-accent text-white text-center py-4 rounded-xl shadow-lg" onclick="togglePages(false)">GET A QUOTE</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="main-content">
+            <!-- Hero -->
+            <section id="hero" class="min-h-screen flex items-center justify-center text-white relative px-4">
+                <div class="container mx-auto text-center max-w-5xl">
+                    <h1 class="text-4xl sm:text-6xl md:text-8xl font-black leading-tight mb-6 drop-shadow-2xl tracking-tighter uppercase">
+                        PRECISION <br><span class="logo-gradient-text drop-shadow-none">MINING SUPPORT</span>
+                    </h1>
+                    <p class="text-lg md:text-2xl text-slate-100 mb-10 max-w-3xl mx-auto drop-shadow-lg font-medium opacity-90">
+                        Strategic industrial solutions and specialized mining services across the Republic—driven by 100% youth-led engineering excellence.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4 md:gap-6">
+                        <a href="#contact" class="bg-accent text-white font-black py-4 md:py-5 px-10 md:px-12 rounded-full text-base md:text-lg hover:bg-accent-hover shadow-2xl tracking-widest uppercase">Consult with Us</a>
+                        <button onclick="togglePages(true)" class="bg-white/10 backdrop-blur-xl border-2 border-white/40 text-white font-black py-4 md:py-5 px-10 md:px-12 rounded-full text-base md:text-lg hover:bg-white/20 transition-all tracking-widest uppercase">View Company Profile</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CSD Card -->
+            <section class="relative z-20 -mt-16 px-4 mb-16">
+                <div class="max-w-6xl mx-auto bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 grid md:grid-cols-2 gap-8 items-center border border-slate-100 dark:border-slate-700 transition-all hover:scale-[1.01]">
+                    <div class="flex items-center gap-6">
+                        <div class="w-16 h-16 bg-[#1A1F2B]/5 dark:bg-white/10 rounded-2xl flex items-center justify-center text-[#1A1F2B] dark:text-[#B8934C] shadow-inner">
+                            <i class="fas fa-shield-check text-3xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Compliance Status</p>
+                            <p class="text-xl font-black dark:text-white uppercase tracking-tighter">Verified & Active</p>
+                        </div>
+                    </div>
+                    <div class="md:border-l border-slate-100 dark:border-slate-700 md:pl-12 flex flex-col justify-center">
+                        <p class="text-[10px] font-black text-accent uppercase tracking-widest mb-1">CSD Supplier ID</p>
+                        <p class="text-3xl font-mono font-black text-secondary-accent dark:text-[#B8934C] tracking-tighter">MAAA1564432</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Grid -->
+            <section id="services" class="py-16 md:py-28 relative">
+                <div class="container mx-auto px-4 md:px-6">
+                    <div class="text-center mb-12 md:mb-20 scroll-reveal">
+                        <span class="text-secondary-accent dark:text-accent font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-3 block">Industrial Excellence</span>
+                        <h2 class="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mt-2 leading-tight uppercase">Our Core Services</h2>
+                        <div class="w-16 md:w-24 h-1.5 md:h-2 bg-accent mx-auto mt-6 md:mt-8 rounded-full title-underline"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
+                        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden group hover:-translate-y-2 transition-all duration-500 scroll-reveal border border-slate-100 dark:border-slate-700">
+                            <div class="h-48 md:h-52 overflow-hidden relative">
+                                <img src="Road Construction.jpg" alt="Mining Support" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-secondary-accent/10"></div>
+                            </div>
+                            <div class="p-6 md:p-8">
+                                <h3 class="text-lg md:text-xl font-black mb-3 dark:text-white group-hover:text-accent transition-colors uppercase tracking-tight">Mining Support</h3>
+                                <p class="text-slate-600 dark:text-slate-400 text-xs md:text-sm leading-relaxed">Specialized quarrying, material handling, and technical support for large-scale mining operations.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden group hover:-translate-y-2 transition-all duration-500 scroll-reveal border border-slate-100 dark:border-slate-700">
+                            <div class="h-48 md:h-52 overflow-hidden relative">
+                                <img src="Asphalt & Tar Surfacing.jpg" alt="Asphalt" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-accent/10"></div>
+                            </div>
+                            <div class="p-6 md:p-8">
+                                <h3 class="text-lg md:text-xl font-black mb-3 dark:text-white group-hover:text-secondary-accent transition-colors uppercase tracking-tight">Asphalt & Tar</h3>
+                                <p class="text-slate-600 dark:text-slate-400 text-xs md:text-sm leading-relaxed">Delivering weather-resistant surfacing for driveways, parking lots, and major roadways across RSA.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden group hover:-translate-y-2 transition-all duration-500 scroll-reveal border border-slate-100 dark:border-slate-700">
+                            <div class="h-48 md:h-52 overflow-hidden relative">
+                                <img src="Paving Solutions.jpg" alt="Paving" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            </div>
+                            <div class="p-6 md:p-8">
+                                <h3 class="text-lg md:text-xl font-black mb-3 dark:text-white group-hover:text-accent transition-colors uppercase tracking-tight">Paving Solutions</h3>
+                                <p class="text-slate-600 dark:text-slate-400 text-xs md:text-sm leading-relaxed">Transformative outdoor spaces with expert paving solutions for patios and residential driveways.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden group hover:-translate-y-2 transition-all duration-500 scroll-reveal border border-accent/30 dark:border-accent/20 scale-[1.03]">
+                            <div class="h-48 md:h-52 overflow-hidden relative">
+                                <video autoplay loop muted playsinline class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                    <source src="Supply.mp4" type="video/mp4">
+                                </video>
+                                <div class="absolute inset-0 bg-accent/5"></div>
+                                <div class="absolute top-4 right-4 bg-accent text-white text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">Primary Focus</div>
+                            </div>
+                            <div class="p-6 md:p-8">
+                                <h3 class="text-lg md:text-xl font-black mb-3 dark:text-white group-hover:text-accent transition-colors uppercase tracking-tight">Industrial Supply</h3>
+                                <p class="text-slate-600 dark:text-slate-400 text-xs md:text-sm leading-relaxed font-bold">Tactical procurement and delivery of mining machinery, safety gear, and industrial hardware across the Republic.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Gallery -->
+            <section id="gallery" class="py-16 md:py-28 bg-slate-50 dark:bg-slate-900/50">
+                <div class="container mx-auto px-4 md:px-6">
+                    <div class="text-center mb-12 md:mb-20 scroll-reveal">
+                        <span class="text-accent font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-3 block">Our Portfolio</span>
+                        <h2 class="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mt-2 leading-tight uppercase">Recent Projects</h2>
+                        <div class="w-16 md:w-24 h-1.5 md:h-2 bg-accent mx-auto mt-6 md:mt-8 rounded-full"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="relative group overflow-hidden rounded-3xl shadow-xl project-card scroll-reveal">
+                            <img src="Community Access Road.jpg" alt="Community Access" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-secondary-accent/90 to-transparent opacity-0 transition-opacity duration-300 project-overlay flex flex-col justify-end p-8 translate-y-4">
+                                <h4 class="text-white font-black uppercase text-xl mb-2">Community Access</h4>
+                                <p class="text-accent font-bold text-sm">Road Infrastructure</p>
+                            </div>
+                        </div>
+                        <div class="relative group overflow-hidden rounded-3xl shadow-xl project-card scroll-reveal">
+                            <img src="Industrial Parking Lot.jpg" alt="Industrial Parking" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-secondary-accent/90 to-transparent opacity-0 transition-opacity duration-300 project-overlay flex flex-col justify-end p-8 translate-y-4">
+                                <h4 class="text-white font-black uppercase text-xl mb-2">Industrial Parking</h4>
+                                <p class="text-accent font-bold text-sm">Commercial Surfacing</p>
+                            </div>
+                        </div>
+                        <div class="relative group overflow-hidden rounded-3xl shadow-xl project-card scroll-reveal">
+                            <img src="General Building.jpg" alt="General Building" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-secondary-accent/90 to-transparent opacity-0 transition-opacity duration-300 project-overlay flex flex-col justify-end p-8 translate-y-4">
+                                <h4 class="text-white font-black uppercase text-xl mb-2">General Building</h4>
+                                <p class="text-accent font-bold text-sm">Structural Construction</p>
+                            </div>
+                        </div>
+                        <div class="relative group overflow-hidden rounded-3xl shadow-xl project-card scroll-reveal">
+                            <img src="Residential Driveway.jpg" alt="Residential Driveway" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-secondary-accent/90 to-transparent opacity-0 transition-opacity duration-300 project-overlay flex flex-col justify-end p-8 translate-y-4">
+                                <h4 class="text-white font-black uppercase text-xl mb-2">Residential Driveway</h4>
+                                <p class="text-accent font-bold text-sm">Premium Paving</p>
+                            </div>
+                        </div>
+                        <div class="relative group overflow-hidden rounded-3xl shadow-xl project-card scroll-reveal">
+                            <img src="Industrial Properties.jpg" alt="Industrial Properties" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-secondary-accent/90 to-transparent opacity-0 transition-opacity duration-300 project-overlay flex flex-col justify-end p-8 translate-y-4">
+                                <h4 class="text-white font-black uppercase text-xl mb-2">Industrial Properties</h4>
+                                <p class="text-accent font-bold text-sm">Property Development</p>
+                            </div>
+                        </div>
+                        <div class="relative group overflow-hidden rounded-3xl shadow-xl project-card scroll-reveal">
+                            <img src="Residential Properties.jpg" alt="Residential Properties" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-secondary-accent/90 to-transparent opacity-0 transition-opacity duration-300 project-overlay flex flex-col justify-end p-8 translate-y-4">
+                                <h4 class="text-white font-black uppercase text-xl mb-2">Residential Properties</h4>
+                                <p class="text-accent font-bold text-sm">Building & Renovation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section id="faq" class="py-16 md:py-24 bg-white dark:bg-slate-900">
+                <div class="container mx-auto px-4 md:px-6">
+                    <div class="text-center mb-12 md:mb-16 scroll-reveal">
+                        <h2 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white uppercase tracking-tighter text-center">Industry Q&A</h2>
+                        <div class="w-16 md:w-24 h-1.5 md:h-2 bg-accent mx-auto mt-6 rounded-full title-underline"></div>
+                    </div>
+                    <div class="max-w-4xl mx-auto space-y-4 md:space-y-6">
+                        <div class="faq-item border border-slate-200 dark:border-slate-700 rounded-2xl md:rounded-3xl bg-white dark:bg-slate-800 transition-all overflow-hidden scroll-reveal shadow-sm hover:shadow-md">
+                            <div class="flex justify-between items-center p-6 md:p-8 cursor-pointer select-none" onclick="toggleFaq(this)">
+                                <h3 class="font-black text-base md:text-xl dark:text-white uppercase tracking-tight">Which mining regions do you serve?</h3>
+                                <i class="fas fa-plus transition-transform duration-300 text-accent"></i>
+                            </div>
+                            <div class="faq-answer px-6 md:px-8 pb-6 md:pb-8 text-slate-600 dark:text-slate-400 text-sm md:text-lg leading-relaxed">
+                                Our operations are centered in the Mpumalanga coal belt (Eendracht/Embalenhle), but we provide industrial and mining support across Gauteng and nationwide for large-scale contracts.
+                            </div>
+                        </div>
+                        <div class="faq-item border border-slate-200 dark:border-slate-700 rounded-2xl md:rounded-3xl bg-white dark:bg-slate-800 transition-all overflow-hidden scroll-reveal shadow-sm hover:shadow-md">
+                            <div class="flex justify-between items-center p-6 md:p-8 cursor-pointer select-none" onclick="toggleFaq(this)">
+                                <h3 class="font-black text-base md:text-xl dark:text-white uppercase tracking-tight">How verified is your CSD registration?</h3>
+                                <i class="fas fa-plus transition-transform duration-300 text-accent"></i>
+                            </div>
+                            <div class="faq-answer px-6 md:px-8 pb-6 md:pb-8 text-slate-600 dark:text-slate-400 text-sm md:text-lg">
+                                Madlangempisi Holdings is a fully verified, active supplier on the Central Supplier Database (Supplier Number: <strong>MAAA1564432</strong>). We meet all CIPC, SARS, and Treasury compliance markers.
+                            </div>
+                        </div>
+                        <div class="faq-item border border-slate-200 dark:border-slate-700 rounded-2xl md:rounded-3xl bg-white dark:bg-slate-800 transition-all overflow-hidden scroll-reveal shadow-sm hover:shadow-md">
+                            <div class="flex justify-between items-center p-6 md:p-8 cursor-pointer select-none" onclick="toggleFaq(this)">
+                                <h3 class="font-black text-base md:text-xl dark:text-white uppercase tracking-tight">What are your core mining support capabilities?</h3>
+                                <i class="fas fa-plus transition-transform duration-300 text-accent"></i>
+                            </div>
+                            <div class="faq-answer px-6 md:px-8 pb-6 md:pb-8 text-slate-600 dark:text-slate-400 text-sm md:text-lg">
+                                We specialize in Mining and Quarrying support, specialized material handling, plant maintenance, and high-integrity industrial supply chains including machinery procurement.
+                            </div>
+                        </div>
+                        <div class="faq-item border border-slate-200 dark:border-slate-700 rounded-2xl md:rounded-3xl bg-white dark:bg-slate-800 transition-all overflow-hidden scroll-reveal shadow-sm hover:shadow-md">
+                            <div class="flex justify-between items-center p-6 md:p-8 cursor-pointer select-none" onclick="toggleFaq(this)">
+                                <h3 class="font-black text-base md:text-xl dark:text-white uppercase tracking-tight">Is your company Level 1 B-BBEE compliant?</h3>
+                                <i class="fas fa-plus transition-transform duration-300 text-accent"></i>
+                            </div>
+                            <div class="faq-answer px-6 md:px-8 pb-6 md:pb-8 text-slate-600 dark:text-slate-400 text-sm md:text-lg">
+                                Yes. We are 100% black youth-owned and operate as an Exempted Micro Enterprise (EME) with a Level 1 B-BBEE contribution status, aiding our clients' procurement scorecards.
+                            </div>
+                        </div>
+                        <div class="faq-item border border-slate-200 dark:border-slate-700 rounded-2xl md:rounded-3xl bg-white dark:bg-slate-800 transition-all overflow-hidden scroll-reveal shadow-sm hover:shadow-md">
+                            <div class="flex justify-between items-center p-6 md:p-8 cursor-pointer select-none" onclick="toggleFaq(this)">
+                                <h3 class="font-black text-base md:text-xl dark:text-white uppercase tracking-tight">How do you handle health and safety?</h3>
+                                <i class="fas fa-plus transition-transform duration-300 text-accent"></i>
+                            </div>
+                            <div class="faq-answer px-6 md:px-8 pb-6 md:pb-8 text-slate-600 dark:text-slate-400 text-sm md:text-lg">
+                                Safety is our apex priority. We maintain strict adherence to the Mine Health and Safety Act (MHSA) and the OHS Act, ensuring all personnel are certified and all sites are risk-managed.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="py-16 md:py-32 bg-slate-900 overflow-hidden">
+                <div class="container mx-auto px-4 md:px-6">
+                    <div class="max-w-7xl mx-auto bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row scroll-reveal border border-white/10">
+                        <div class="md:w-5/12 bg-secondary-accent p-10 lg:p-16 text-white relative">
+                            <h3 class="text-3xl md:text-4xl font-black mb-8 leading-none tracking-tight uppercase text-accent">Industrial <br>Partnership</h3>
+                            <div class="space-y-10">
+                                <div class="flex items-center space-x-6 group">
+                                    <div class="w-12 h-12 md:w-14 h-12 md:h-14 bg-white/20 rounded-2xl flex items-center justify-center text-xl md:text-2xl shadow-inner group-hover:bg-white group-hover:text-secondary-accent transition-all"><i class="fab fa-whatsapp"></i></div>
+                                    <div>
+                                        <p class="text-[10px] md:text-xs text-blue-200 uppercase font-black tracking-widest mb-1">WhatsApp / Phone</p>
+                                        <p class="text-lg md:text-xl font-black">066 147 8902</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-6 group">
+                                    <div class="w-12 h-12 md:w-14 h-12 md:h-14 bg-white/20 rounded-2xl flex items-center justify-center text-xl md:text-2xl shadow-inner group-hover:bg-white group-hover:text-secondary-accent transition-all"><i class="fas fa-envelope"></i></div>
+                                    <div>
+                                        <p class="text-[10px] md:text-xs text-blue-200 uppercase font-black tracking-widest mb-1">Official Email</p>
+                                        <p class="text-base md:text-lg font-black truncate max-w-[220px]">cindithembinkosi81@gmail.com</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-6 group">
+                                    <div class="w-12 h-12 md:w-14 h-12 md:h-14 bg-white/20 rounded-2xl flex items-center justify-center text-xl md:text-2xl shadow-inner shrink-0 group-hover:bg-white group-hover:text-secondary-accent transition-all"><i class="fas fa-map-marker-alt"></i></div>
+                                    <div>
+                                        <p class="text-[10px] md:text-xs text-blue-200 uppercase font-black tracking-widest mb-1">Corporate HQ</p>
+                                        <p class="text-sm md:text-base font-black leading-tight">Stand No 3721 Ext 10, Eendracht, Mpumalanga, 2265</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:w-7/12 p-10 lg:p-16">
+                            <h3 class="text-2xl md:text-3xl font-black mb-10 dark:text-white uppercase tracking-tight">Procurement Request</h3>
+                            <form id="contact-form" class="space-y-6 md:space-y-8">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+                                    <input type="text" name="name" placeholder="Full Name" class="w-full p-4 md:p-5 rounded-2xl border border-slate-200 dark:bg-slate-700 dark:border-slate-600 outline-none font-bold focus:ring-4 ring-accent/10 transition-all" required>
+                                    <input type="email" name="email" placeholder="Email Address" class="w-full p-4 md:p-5 rounded-2xl border border-slate-200 dark:bg-slate-700 dark:border-slate-600 outline-none font-bold focus:ring-4 ring-accent/10 transition-all" required>
+                                </div>
+                                <select name="service" class="w-full p-4 md:p-5 rounded-2xl border border-slate-200 dark:bg-slate-700 dark:border-slate-600 outline-none font-bold">
+                                    <option>Mining Support & Quarrying</option>
+                                    <option>Industrial Plant Maintenance</option>
+                                    <option>Logistics & Supply Chain</option>
+                                    <option>Tactical Procurement</option>
+                                </select>
+                                <textarea name="message" rows="4" placeholder="Specify your technical requirements..." class="w-full p-4 md:p-5 rounded-2xl border border-slate-200 dark:bg-slate-700 dark:border-slate-600 outline-none font-bold focus:ring-4 ring-accent/10 transition-all" required></textarea>
+                                <button type="submit" class="w-full bg-accent text-white font-black p-5 md:p-6 rounded-2xl hover:bg-black shadow-2xl transition-all transform hover:-translate-y-1 tracking-[0.2em] uppercase text-[10px] md:text-sm">Submit Consultation</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Professional Corporate Profile SPA View -->
+        <div id="services-page" class="hidden min-h-screen bg-slate-50 dark:bg-slate-900 pt-32 pb-24">
+            <div class="container mx-auto px-4 md:px-6">
+                <!-- Navigation -->
+                <div class="max-w-6xl mx-auto mb-16 flex justify-start">
+                    <button onclick="togglePages(false)" class="inline-flex items-center text-[#B8934C] font-black hover:translate-x-[-8px] transition-transform uppercase tracking-widest text-xs">
+                        <i class="fas fa-arrow-left mr-3"></i> Back to Main Site
+                    </button>
+                </div>
+
+                <!-- Profile Hero Header -->
+                <div class="max-w-6xl mx-auto mb-20 text-center">
+                    <span class="compliance-tag mb-6 inline-block">B-BBEE LEVEL 1 CERTIFIED</span>
+                    <h1 class="text-5xl md:text-8xl font-black text-slate-900 dark:text-white mb-6 tracking-tighter uppercase leading-none">Our Profile</h1>
+                    <div class="w-32 h-3 bg-accent rounded-full mx-auto mb-8"></div>
+                    <p class="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto font-medium leading-relaxed">
+                        A multi-disciplinary industrial force specializing in high-impact mining support, civil infrastructure, and tactical procurement.
+                    </p>
+                </div>
+
+                <!-- Structured Description Grid -->
+                <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
+                    <!-- Left: Core Narrative -->
+                    <div class="lg:col-span-8 space-y-12">
+                        <div class="description-panel p-10 md:p-14 scroll-reveal">
+                            <h2 class="text-3xl font-black dark:text-white uppercase mb-8 border-l-8 border-accent pl-6 leading-none">Executive Overview</h2>
+                            <div class="space-y-6 text-slate-600 dark:text-slate-400 text-lg leading-relaxed font-medium">
+                                <p><strong>MADLANGEMPISI HOLDINGS (PTY) LTD</strong> (Registration: 2025/073170/07) is a premier South African industrial entity, strategically headquartered in Mpumalanga. Established with a vision to revolutionize the resource sector's supply chain, we provide specialized support services that merge technical rigor with logistical precision.</p>
+                                <p>As a 100% black youth-owned firm, we represent the vanguard of South African engineering leadership. Our methodology is built on the <strong>"Zero-Harm"</strong> principle, ensuring that all mining and civil operations meet international health and safety benchmarks (MHSA & OHS Act).</p>
+                                <p>Our diverse service portfolio spans across specialized water transport, the erection of complex prefabricated constructions, and intensive support activities for mining and quarrying operations. We don't just supply services; we build the foundational infrastructure that drives the South African economy.</p>
+                            </div>
+                        </div>
+
+                        <!-- Vision & Values Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="bg-secondary-accent text-white p-10 rounded-[3rem] shadow-xl relative overflow-hidden group">
+                                <div class="relative z-10">
+                                    <h3 class="text-accent text-xl font-black uppercase mb-4 tracking-tighter">Strategic Mission</h3>
+                                    <p class="text-slate-400 font-medium text-sm leading-relaxed italic">"To provide the industrial backbone for national growth by delivering high-integrity mining support and procurement solutions that prioritize safety and operational continuity."</p>
+                                </div>
+                                <div class="absolute -right-10 -bottom-10 text-white/5 text-9xl font-black italic">M</div>
+                            </div>
+                            <div class="description-panel p-10 scroll-reveal">
+                                <h3 class="text-secondary-accent dark:text-accent text-xl font-black uppercase mb-4 tracking-tighter">Our Promise</h3>
+                                <p class="text-slate-600 dark:text-slate-400 font-medium text-sm leading-relaxed">We guarantee technical precision in every contract, maintaining a verified active status on the National Treasury's CSD to ensure seamless partnership for public and private sector clients.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Compliance & Identification -->
+                    <div class="lg:col-span-4 flex flex-col gap-8">
+                        <!-- Identification Panel -->
+                        <div class="bg-white dark:bg-slate-800 p-10 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-700 scroll-reveal">
+                            <h3 class="text-accent font-black uppercase text-[10px] mb-10 tracking-widest text-center">Entity Governance</h3>
+                            <div class="space-y-8">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-accent"><i class="fas fa-fingerprint text-xs"></i></div>
+                                    <div>
+                                        <span class="block text-[8px] text-slate-500 font-black uppercase">Reg. Number</span>
+                                        <span class="text-sm font-black dark:text-white">2025/073170/07</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-accent"><i class="fas fa-barcode text-xs"></i></div>
+                                    <div>
+                                        <span class="block text-[8px] text-slate-500 font-black uppercase">CSD Number</span>
+                                        <span class="text-sm font-black dark:text-white">MAAA1564432</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-accent"><i class="fas fa-award text-xs"></i></div>
+                                    <div>
+                                        <span class="block text-[8px] text-slate-500 font-black uppercase">CIDB Grade</span>
+                                        <span class="text-sm font-black dark:text-white">Active (Multi-Grade)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Safety & OHS -->
+                        <div class="bg-slate-950 p-10 rounded-[3rem] shadow-2xl text-white relative overflow-hidden">
+                            <h3 class="text-accent font-black uppercase text-xs mb-6 tracking-widest relative z-10">Operational Values</h3>
+                            <ul class="space-y-5 relative z-10">
+                                <li class="flex items-start gap-4">
+                                    <i class="fas fa-check-circle text-accent mt-1"></i>
+                                    <div>
+                                        <p class="font-black text-xs uppercase">Safety Apex</p>
+                                        <p class="text-[10px] text-slate-400">Strict adherence to MHSA & OHS.</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <i class="fas fa-check-circle text-accent mt-1"></i>
+                                    <div>
+                                        <p class="font-black text-xs uppercase">Integrity First</p>
+                                        <p class="text-[10px] text-slate-400">Transparent procurement cycles.</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <i class="fas fa-check-circle text-accent mt-1"></i>
+                                    <div>
+                                        <p class="font-black text-xs uppercase">Innovation</p>
+                                        <p class="text-[10px] text-slate-400">Next-gen engineering methodology.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="absolute -right-4 -bottom-4 text-white/5 text-8xl font-black"><i class="fas fa-hard-hat"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Industrial Scopes (Detailed Cards) -->
+                <div class="max-w-6xl mx-auto mb-24">
+                    <h2 class="text-3xl font-black dark:text-white uppercase mb-12 text-center tracking-tighter">Strategic Industry Pillars</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Pillar 1 -->
+                        <div class="description-panel group overflow-hidden hover:border-accent transition-all duration-500">
+                            <div class="h-48 overflow-hidden relative">
+                                <img src="About Ndlela-Mathuthu Construction.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mining Support">
+                                <div class="absolute inset-0 bg-secondary-accent/20"></div>
+                            </div>
+                            <div class="p-8">
+                                <h4 class="font-black text-xl dark:text-white uppercase mb-4 leading-none">Mining & Quarrying Support</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">Focused support activities including material sorting, specialized extraction assistance, and crushing operations managed by MHSA-certified personnel.</p>
+                            </div>
+                        </div>
+                        <!-- Pillar 2 -->
+                        <div class="description-panel group overflow-hidden hover:border-accent transition-all duration-500">
+                            <div class="h-48 overflow-hidden relative">
+                                <img src="Industrial Properties.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Prefabrication">
+                                <div class="absolute inset-0 bg-secondary-accent/20"></div>
+                            </div>
+                            <div class="p-8">
+                                <h4 class="font-black text-xl dark:text-white uppercase mb-4 leading-none">Prefabricated Construction</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">Specialized erection of complete prefabricated constructions from self-manufactured parts, serving both residential and industrial civil needs.</p>
+                            </div>
+                        </div>
+                        <!-- Pillar 3 -->
+                        <div class="description-panel group overflow-hidden hover:border-accent transition-all duration-500">
+                            <div class="h-48 overflow-hidden relative">
+                                <video autoplay loop muted playsinline class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                    <source src="Supply.mp4" type="video/mp4">
+                                </video>
+                                <div class="absolute inset-0 bg-secondary-accent/20"></div>
+                            </div>
+                            <div class="p-8">
+                                <h4 class="font-black text-xl dark:text-white uppercase mb-4 leading-none">Water Transport & Logistics</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">As a verified CSD supplier for water transport support, we manage technical logistics for resource-intensive industrial and civil sites.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Call to Action -->
+                <div class="max-w-4xl mx-auto text-center scroll-reveal bg-secondary-accent p-16 rounded-[4rem] shadow-2xl">
+                    <h2 class="text-3xl md:text-5xl font-black text-white mb-8 uppercase tracking-tighter">Initiate Partnership</h2>
+                    <p class="text-slate-400 mb-10 font-medium">Download our full PDF Capability Statement or request a project consultation today.</p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-6">
+                        <a href="#contact" onclick="togglePages(false)" class="bg-accent text-white font-black py-5 px-14 rounded-full shadow-2xl hover:bg-black transition-all uppercase tracking-widest text-xs">Request a Consultation</a>
+                        <button onclick="togglePages(false)" class="bg-white/10 text-white font-black py-5 px-14 rounded-full uppercase tracking-widest text-xs hover:bg-white/20 transition-all">Back to Home</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action -->
+    <a href="https://wa.me/27661478902" target="_blank" class="whatsapp-fab" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Standard Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-16 md:py-20">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-10 mb-12 md:mb-16">
+                <div class="flex items-center space-x-5 group">
+                    <div class="bg-white p-1 rounded-xl shadow-lg transition-transform group-hover:scale-105">
+                        <img src="logo.jpg" alt="Madlangempisi Logo" class="w-12 h-12 md:w-16 md:h-16 object-contain rounded-lg" onerror="this.src='https://via.placeholder.com/60?text=M'">
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span class="text-white font-black text-xl md:text-2xl tracking-tighter uppercase">MADLANGEMPISI</span>
+                        <span class="text-accent font-bold text-[10px] md:text-xs tracking-widest uppercase">Holdings (PTY) LTD</span>
+                    </div>
+                </div>
+                <div class="flex space-x-8">
+                    <a href="#" class="text-slate-500 hover:text-accent transition-all text-2xl"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-slate-500 hover:text-accent transition-all text-2xl"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="text-center border-t border-slate-800 pt-10">
+                <p class="text-slate-500 font-bold mb-3 text-sm md:text-base">&copy; <span id="year"></span> MADLANGEMPISI HOLDINGS (PTY) LTD.</p>
+                <p class="text-[10px] md:text-xs text-slate-600 font-black uppercase tracking-[0.3em]">Reg: 2025/073170/07 | CSD Supplier: MAAA1564432</p>
+                <p class="text-[9px] md:text-xs text-slate-700 mt-2">Stand No 3721 Ext 10, Eendracht, Mpumalanga, 2265</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div id="success-message" class="fixed inset-0 bg-slate-900/80 flex items-center justify-center hidden p-4 z-[100] backdrop-blur-md">
+        <div class="bg-white dark:bg-slate-800 p-10 md:p-12 rounded-[2.5rem] shadow-2xl text-center max-w-md w-full border-b-[12px] border-accent">
+            <div class="text-7xl md:text-8xl text-accent mb-6 md:mb-8"><i class="fas fa-check-circle"></i></div>
+            <h2 class="text-3xl md:text-4xl font-black mb-4 md:mb-6 dark:text-white uppercase tracking-tighter text-center">Inquiry Received</h2>
+            <button onclick="document.getElementById('success-message').classList.add('hidden')" class="bg-secondary-accent text-white font-black py-4 md:py-5 px-10 md:px-12 rounded-2xl hover:bg-black w-full shadow-2xl transition-all uppercase tracking-widest text-xs">Close</button>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            document.getElementById('preloader').classList.add('loaded');
+            setTimeout(scrollReveal, 300);
+        });
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        
+        function updateThemeIcon() {
+            if (document.documentElement.classList.contains('dark')) {
+                themeIcon.className = 'fas fa-sun text-lg text-yellow-400';
+            } else {
+                themeIcon.className = 'fas fa-moon text-lg text-slate-100';
+            }
+        }
+        updateThemeIcon();
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
+            updateThemeIcon();
+        });
+
+        const mainContent = document.getElementById('main-content');
+        const servicesPage = document.getElementById('services-page');
+        function togglePages(showDetailed) {
+            if (showDetailed) {
+                mainContent.classList.add('hidden');
+                servicesPage.classList.remove('hidden');
+            } else {
+                servicesPage.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            const isActive = item.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+            if (!isActive) item.classList.add('active');
+        }
+
+        window.addEventListener('scroll', () => {
+            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+            scrollReveal();
+            animateStats();
+        });
+
+        function scrollReveal() {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            reveals.forEach(el => {
+                const revealTop = el.getBoundingClientRect().top;
+                if (revealTop < window.innerHeight - 50) el.classList.add('visible');
+            });
+        }
+
+        let animated = false;
+        function animateStats() {
+            const statsSection = document.getElementById('stats');
+            if (animated || !statsSection) return;
+            const revealTop = statsSection.getBoundingClientRect().top;
+            if (revealTop < window.innerHeight - 100) {
+                animated = true;
+                statsSection.querySelectorAll('[data-target]').forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    let current = 0;
+                    const timer = setInterval(() => {
+                        current += target / 100;
+                        if (current >= target) {
+                            counter.textContent = target + (target > 24 ? "+" : "");
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = Math.ceil(current);
+                        }
+                    }, 20);
+                });
+            }
+        }
+
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            setTimeout(() => {
+                document.getElementById('success-message').classList.remove('hidden');
+                e.target.reset();
+            }, 500);
+        });
+
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
